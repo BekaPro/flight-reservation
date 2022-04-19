@@ -24,10 +24,8 @@ public class Customer {
     @Column(name = "name", nullable = false, length = 100)
     String name;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "wallet_id", referencedColumnName = "id", nullable = false, unique = true)
     Wallet wallet;
-
-
 
 }

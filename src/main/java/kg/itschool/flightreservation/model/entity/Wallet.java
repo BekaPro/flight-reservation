@@ -22,7 +22,7 @@ public class Wallet {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column(name = "funds", columnDefinition = "MONEY DEFAULT MONEY(0)")
+    @Column(name = "funds", columnDefinition = "NUMERIC DEFAULT 0")
     BigDecimal funds;
 
 }

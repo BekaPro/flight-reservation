@@ -29,4 +29,11 @@ public class CustomerServiceImpl implements CustomerService {
 
         return customerRepository.save(customer);
     }
+
+    @Override
+    public Customer getById(Long id) {
+        return customerRepository
+                .findById(id)
+                .orElseThrow(() -> new RuntimeException("Customer with id=" + id + " not found"));
+    }
 }

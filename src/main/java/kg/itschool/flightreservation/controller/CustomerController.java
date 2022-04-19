@@ -23,10 +23,18 @@ public class CustomerController {
 
     @NonNull CustomerService customerService;
 
-    @PostMapping(value = "/create")
+    @PostMapping("/create")
     public ResponseEntity<?> create(@RequestBody @Validated CreateCustomerRequest request) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(customerService.create(request));
     }
+
+    @GetMapping("/get/{id}")
+    public ResponseEntity<?> getById(@PathVariable Long id) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(customerService.getById(id));
+    }
+
 }

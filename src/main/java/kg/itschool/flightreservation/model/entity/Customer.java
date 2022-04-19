@@ -21,8 +21,13 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    @Column(name = "name", nullable = false, length = 100)
+    String name;
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "wallet_id", referencedColumnName = "id", nullable = false, unique = true)
     Wallet wallet;
+
+
 
 }

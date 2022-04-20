@@ -1,31 +1,56 @@
 package kg.itschool.flightreservation.model.entity;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.util.Objects;
 
-@Data
+@Getter
+@Setter
 @Entity
-@Table(name = "tb_customer")
+@ToString
 @NoArgsConstructor
-@AllArgsConstructor
+@Table(name = "tb_customer")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Customer {
+public class Customer extends BaseEntity {
 
-    @Id
-    @Column(name = "id", nullable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    @Column(name = "email", nullable = false, unique = true, length = 100)
+    String email;
 
-    @Column(name = "name", nullable = false, length = 100)
-    String name;
+    @Column(name = "first_name", nullable = false, length = 100)
+    String firstName;
+
+    @Column(name = "last_name", nullable = false, length = 100)
+    String lastName;
+
+    @Column(name = "patronymic", length = 100)
+    String patronymic;
+
+    @Column(name = "full_name", nullable = false,
+            columnDefinition = "VARCHAR(100) GENERATED ALWAYS AS (" +
+                    "CASE WHEN patronymic IS NULL THEN last_name || ' ' || first_name " +
+                    "ELSE last_name || ' ' || first_name || ' ' || patronymic END) STORED")
+    String fullName;
+
+    @Column(name = "phone_number", nullable = false, length = 50)
+    String phoneNumber;
 
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "wallet_id", referencedColumnName = "id", nullable = false, unique = true)
     Wallet wallet;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Customer customer = (Customer) o;
+        return getId() != null && Objects.equals(getId(), customer.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

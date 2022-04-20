@@ -1,26 +1,19 @@
 package kg.itschool.flightreservation.model.entity;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 
-@Data
+@Getter
+@Setter
 @Entity
-@Table(name = "tb_wallets")
+@ToString
 @NoArgsConstructor
-@AllArgsConstructor
+@Table(name = "tb_wallets")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Wallet {
-
-    @Id
-    @Column(name = "id", nullable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+public class Wallet extends BaseEntity {
 
     @Column(name = "funds", columnDefinition = "NUMERIC DEFAULT 0")
     BigDecimal funds;

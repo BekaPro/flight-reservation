@@ -1,5 +1,6 @@
 package kg.itschool.flightreservation.service.impl;
 
+import kg.itschool.flightreservation.exceptions.EntityNotFoundException;
 import kg.itschool.flightreservation.model.entity.Customer;
 import kg.itschool.flightreservation.model.entity.Wallet;
 import kg.itschool.flightreservation.model.request.CreateCustomerRequest;
@@ -23,9 +24,19 @@ public class CustomerServiceImpl implements CustomerService {
         Wallet wallet = new Wallet();
         wallet.setFunds(request.getFunds());
 
+        String fullName = ( // "John Doe S"
+                        request.getLastName().trim() + " " +
+                        request.getFirstName().trim() + " " +
+                        request.getPatronymic()).trim();
+
         Customer customer = new Customer();
+        customer.setEmail(request.getEmail().trim());
         customer.setWallet(wallet);
-        customer.setName(request.getName());
+        customer.setFirstName(request.getFirstName().trim());
+        customer.setLastName(request.getLastName().trim());
+        customer.setPatronymic(request.getPatronymic().trim());
+        customer.setPhoneNumber(request.getPhoneNumber().trim());
+        customer.setFullName(fullName);
 
         return customerRepository.save(customer);
     }
@@ -34,6 +45,6 @@ public class CustomerServiceImpl implements CustomerService {
     public Customer getById(Long id) {
         return customerRepository
                 .findById(id)
-                .orElseThrow(() -> new RuntimeException("Customer with id=" + id + " not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Customer with id=" + id + " not found"));
     }
 }

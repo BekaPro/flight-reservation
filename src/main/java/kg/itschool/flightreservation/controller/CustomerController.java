@@ -1,10 +1,7 @@
 package kg.itschool.flightreservation.controller;
 
-import kg.itschool.flightreservation.model.entity.Customer;
-import kg.itschool.flightreservation.model.entity.Wallet;
+import kg.itschool.flightreservation.exceptions.EntityNotFoundException;
 import kg.itschool.flightreservation.model.request.CreateCustomerRequest;
-import kg.itschool.flightreservation.repository.CustomerRepository;
-import kg.itschool.flightreservation.repository.WalletRepository;
 import kg.itschool.flightreservation.service.CustomerService;
 import lombok.AccessLevel;
 import lombok.NonNull;
@@ -21,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CustomerController {
 
-    @NonNull CustomerService customerService;
+    @NonNull CustomerService customerService; // bean injection
 
     @PostMapping("/create")
     public ResponseEntity<?> create(@RequestBody @Validated CreateCustomerRequest request) {
@@ -30,11 +27,10 @@ public class CustomerController {
                 .body(customerService.create(request));
     }
 
-    @GetMapping("/get/{id}")
+    @GetMapping("/get/{id}") // http://localhost:8000/api/v1/customer/get/
     public ResponseEntity<?> getById(@PathVariable Long id) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(customerService.getById(id));
     }
-
 }

@@ -28,10 +28,7 @@ public class Customer extends BaseEntity {
     @Column(name = "patronymic", length = 100)
     String patronymic;
 
-    @Column(name = "full_name", nullable = false,
-            columnDefinition = "VARCHAR(100) GENERATED ALWAYS AS (" +
-                    "CASE WHEN patronymic IS NULL THEN last_name || ' ' || first_name " +
-                    "ELSE last_name || ' ' || first_name || ' ' || patronymic END) STORED")
+    @Column(name = "full_name")
     String fullName;
 
     @Column(name = "phone_number", nullable = false, length = 50)
@@ -53,4 +50,5 @@ public class Customer extends BaseEntity {
     public int hashCode() {
         return getClass().hashCode();
     }
+
 }

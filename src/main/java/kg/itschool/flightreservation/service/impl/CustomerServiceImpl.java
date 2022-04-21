@@ -1,6 +1,8 @@
 package kg.itschool.flightreservation.service.impl;
 
 import kg.itschool.flightreservation.exceptions.EntityNotFoundException;
+import kg.itschool.flightreservation.model.dto.CustomerDto;
+import kg.itschool.flightreservation.model.dto.WalletDto;
 import kg.itschool.flightreservation.model.entity.Customer;
 import kg.itschool.flightreservation.model.entity.Wallet;
 import kg.itschool.flightreservation.model.request.CreateCustomerRequest;
@@ -20,7 +22,7 @@ public class CustomerServiceImpl implements CustomerService {
     @NonNull CustomerRepository customerRepository;
 
     @Override
-    public Customer create(CreateCustomerRequest request) {
+    public CustomerDto create(CreateCustomerRequest request) {
         Wallet wallet = new Wallet();
         wallet.setFunds(request.getFunds());
 
@@ -38,13 +40,34 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setPhoneNumber(request.getPhoneNumber().trim());
         customer.setFullName(fullName);
 
-        return customerRepository.save(customer);
+        customerRepository.save(customer);
+
+        return CustomerDto
+                .builder()
+                .id(customer.getId())
+                .dateUpdated(customer.getDateUpdated())
+                .dateCreated(customer.getDateCreated())
+                .email(customer.getEmail())
+                .firstName(customer.getFirstName())
+                .lastName(customer.getLastName())
+                .patronymic(customer.getPatronymic())
+                .phoneNumber(customer.getPhoneNumber())
+                .fullName(customer.getFullName())
+                .wallet(WalletDto
+                        .builder()
+                        .id(wallet.getId())
+                        .funds(wallet.getFunds())
+                        .dateCreated(wallet.getDateCreated())
+                        .dateUpdated(wallet.getDateUpdated())
+                        .build())
+                .build();
     }
 
     @Override
-    public Customer getById(Long id) {
-        return customerRepository
-                .findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Customer with id=" + id + " not found"));
+    public CustomerDto getById(Long id) {
+        return null;
+//        return customerRepository
+//                .findById(id)
+//                .orElseThrow(() -> new EntityNotFoundException("Customer with id=" + id + " not found"));
     }
 }

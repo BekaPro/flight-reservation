@@ -21,7 +21,7 @@ public class CustomerController {
     @NonNull CustomerService customerService; // bean injection
 
     @PostMapping("/create")
-    public ResponseEntity<?> create(@RequestBody @Validated CreateCustomerRequest request) {
+    public ResponseEntity<?> create(@Validated @RequestBody CreateCustomerRequest request) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(customerService.create(request));

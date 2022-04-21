@@ -2,9 +2,7 @@ package kg.itschool.flightreservation.model.entity;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.springframework.data.jpa.domain.AbstractPersistable;
 
-import javax.annotation.PostConstruct;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -17,16 +15,16 @@ public abstract class BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "id", insertable = false, updatable = false)
     Long id;
 
-    @Column(name = "date_created", nullable = false, columnDefinition = "TIMESTAMP DEFAULT NOW()")
+    @Column(name = "date_created", nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT NOW()")
     LocalDateTime dateCreated;
 
-    @Column(name = "date_update", nullable = false, columnDefinition = "TIMESTAMP")
+    @Column(name = "date_update", columnDefinition = "TIMESTAMP")
     LocalDateTime dateUpdated;
 
-    @PostConstruct
+    @PrePersist
     private void onCreate() {
         dateCreated = LocalDateTime.now();
     }

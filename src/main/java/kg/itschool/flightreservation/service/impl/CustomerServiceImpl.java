@@ -1,10 +1,9 @@
 package kg.itschool.flightreservation.service.impl;
 
-import kg.itschool.flightreservation.exceptions.EntityNotFoundException;
 import kg.itschool.flightreservation.model.dto.CustomerDto;
-import kg.itschool.flightreservation.model.dto.WalletDto;
 import kg.itschool.flightreservation.model.entity.Customer;
 import kg.itschool.flightreservation.model.entity.Wallet;
+import kg.itschool.flightreservation.model.mapper.CustomerMapper;
 import kg.itschool.flightreservation.model.request.CreateCustomerRequest;
 import kg.itschool.flightreservation.repository.CustomerRepository;
 import kg.itschool.flightreservation.service.CustomerService;
@@ -23,44 +22,19 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerDto create(CreateCustomerRequest request) {
-        Wallet wallet = new Wallet();
-        wallet.setFunds(request.getFunds());
-
-        String fullName = ( // "John Doe S"
-                        request.getLastName().trim() + " " +
-                        request.getFirstName().trim() + " " +
-                        request.getPatronymic()).trim();
-
-        Customer customer = new Customer();
-        customer.setEmail(request.getEmail().trim());
-        customer.setWallet(wallet);
-        customer.setFirstName(request.getFirstName().trim());
-        customer.setLastName(request.getLastName().trim());
-        customer.setPatronymic(request.getPatronymic().trim());
-        customer.setPhoneNumber(request.getPhoneNumber().trim());
-        customer.setFullName(fullName);
-
-        customerRepository.save(customer);
-
-        return CustomerDto
-                .builder()
-                .id(customer.getId())
-                .dateUpdated(customer.getDateUpdated())
-                .dateCreated(customer.getDateCreated())
-                .email(customer.getEmail())
-                .firstName(customer.getFirstName())
-                .lastName(customer.getLastName())
-                .patronymic(customer.getPatronymic())
-                .phoneNumber(customer.getPhoneNumber())
-                .fullName(customer.getFullName())
-                .wallet(WalletDto
+        return CustomerMapper.INSTANCE
+                .toDto(Customer
                         .builder()
-                        .id(wallet.getId())
-                        .funds(wallet.getFunds())
-                        .dateCreated(wallet.getDateCreated())
-                        .dateUpdated(wallet.getDateUpdated())
-                        .build())
-                .build();
+                        .wallet(Wallet
+                                .builder()
+                                .funds(request.getFunds())
+                                .build())
+                        .phoneNumber(request.getPhoneNumber())
+                        .patronymic(request.getPatronymic())
+                        .lastName(request.getLastName())
+                        .email(request.getEmail())
+                        .firstName(request.getFirstName())
+                        .build());
     }
 
     @Override

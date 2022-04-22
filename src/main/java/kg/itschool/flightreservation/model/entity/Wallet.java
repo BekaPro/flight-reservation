@@ -9,7 +9,9 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @Entity
+@Builder
 @ToString
+@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "tb_wallets")
 @FieldDefaults(level = AccessLevel.PRIVATE)

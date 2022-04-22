@@ -11,6 +11,8 @@ import java.util.Objects;
 @Setter
 @Entity
 @ToString
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "tb_customer")
 @FieldDefaults(level = AccessLevel.PRIVATE)

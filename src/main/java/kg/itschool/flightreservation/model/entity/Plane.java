@@ -8,8 +8,10 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
+@Builder
 @ToString
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "tb_planes")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Plane extends BaseEntity {

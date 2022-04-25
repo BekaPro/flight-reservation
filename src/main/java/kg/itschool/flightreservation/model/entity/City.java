@@ -11,8 +11,10 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @Entity
+@Builder
 @ToString
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "tb_cities")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class City extends BaseEntity {

@@ -12,8 +12,10 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
+@Builder
 @ToString
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "tb_flights")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Flight extends BaseEntity {
@@ -25,7 +27,7 @@ public class Flight extends BaseEntity {
     LocalTime departureTime;
 
     @Column(name = "arrival_time", nullable = false)
-    LocalTime arrivalTime;
+    LocalTime flightTIme;
 
     @Column(name = "price", nullable = false)
     BigDecimal price;

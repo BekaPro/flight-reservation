@@ -1,6 +1,9 @@
 package kg.itschool.flightreservation.service.impl;
 
+import kg.itschool.flightreservation.exceptions.EntityNotFoundException;
+import kg.itschool.flightreservation.model.dto.SupplierDto;
 import kg.itschool.flightreservation.model.entity.Supplier;
+import kg.itschool.flightreservation.model.mapper.SupplierMapper;
 import kg.itschool.flightreservation.model.request.CreateSupplierRequest;
 import kg.itschool.flightreservation.repository.SupplierRepository;
 import kg.itschool.flightreservation.service.SupplierService;
@@ -15,11 +18,17 @@ public class SupplierServiceImpl implements SupplierService {
     @NonNull SupplierRepository supplierRepository;
 
     @Override
-    public Supplier create(CreateSupplierRequest request) {
+    public SupplierDto create(CreateSupplierRequest request) {
         Supplier supplier = new Supplier();
         supplier.setSupplierName(request.getSupplierName());
-        supplierRepository.save(supplier);
-        System.out.println(supplier);
-        return supplier;
+        return SupplierMapper.INSTANCE
+                .toDto(supplierRepository.save(supplier));
     }
+
+    Supplier getSupplierByName(String name) {
+        return supplierRepository
+                .findSupplierBySupplierName(name)
+                .orElseThrow(() -> new EntityNotFoundException("Supplier " + name + " not found"));
+    }
+
 }

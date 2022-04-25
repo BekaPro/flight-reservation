@@ -15,7 +15,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Supplier extends BaseEntity {
 
-    @Column(name = "supplier_name", nullable = false)
+    @Column(name = "supplier_name", unique = true, nullable = false)
     String supplierName;
 
     @ToString.Exclude

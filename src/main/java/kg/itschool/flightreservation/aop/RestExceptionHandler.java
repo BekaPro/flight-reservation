@@ -1,5 +1,4 @@
-package aop;
-
+package kg.itschool.flightreservation.aop;
 
 import kg.itschool.flightreservation.exceptions.EntityNotFoundException;
 import org.springframework.core.Ordered;

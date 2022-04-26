@@ -27,7 +27,7 @@ public class Flight extends BaseEntity {
     LocalTime departureTime;
 
     @Column(name = "arrival_time", nullable = false)
-    LocalTime flightTIme;
+    LocalTime arrivalTime;
 
     @Column(name = "price", nullable = false)
     BigDecimal price;

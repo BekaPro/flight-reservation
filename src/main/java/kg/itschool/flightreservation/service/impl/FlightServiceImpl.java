@@ -6,6 +6,9 @@ import kg.itschool.flightreservation.model.entity.Flight;
 import kg.itschool.flightreservation.model.entity.Plane;
 import kg.itschool.flightreservation.model.mapper.FlightMapper;
 import kg.itschool.flightreservation.model.request.CreateFligthRequest;
+import kg.itschool.flightreservation.model.response.CityResponse;
+import kg.itschool.flightreservation.model.response.CustomerFlightResponse;
+import kg.itschool.flightreservation.model.response.PlaneResponse;
 import kg.itschool.flightreservation.repository.FlightRepository;
 import kg.itschool.flightreservation.service.CityService;
 import kg.itschool.flightreservation.service.FlightService;
@@ -17,7 +20,9 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -34,19 +39,13 @@ public class FlightServiceImpl implements FlightService {
         City to = ((CityServiceImpl) cityService).getCityByStateAndName(request.getStateTo(), request.getCityTo());
         City from = ((CityServiceImpl) cityService).getCityByStateAndName(request.getStateFrom(), request.getCityFrom());
 
-        BigDecimal speed = BigDecimal.valueOf(700);
-        BigDecimal distance = calculateDistance(from.getLat(), to.getLat(), from.getLon(), to.getLon());
-
-        BigDecimal result = distance.divide(speed, RoundingMode.CEILING);
-
-        System.out.println(result);
-
         Flight flight = Flight
                 .builder()
                 .to(to)
                 .from(from)
                 .flightDate(request.getFlightDate())
                 .departureTime(request.getDepartureTime())
+                .arrivalTime(request.getArrivalTime())
                 .plane(plane)
                 .price(request.getPrice())
                 .build();
@@ -55,12 +54,34 @@ public class FlightServiceImpl implements FlightService {
                 .toDto(flightRepository.save(flight));
     }
 
-    private BigDecimal calculateDistance(BigDecimal latFrom, BigDecimal latTo, BigDecimal lonFrom, BigDecimal lonTo) {
-        BigDecimal res = BigDecimal.valueOf(0.5).subtract(BigDecimal.valueOf(Math.cos((latTo.doubleValue() - latFrom.doubleValue()) * Math.PI)).divide(BigDecimal.valueOf(2))).add(
-                BigDecimal.valueOf(Math.cos(latFrom.doubleValue() * Math.PI) * Math.cos(latTo.doubleValue() * Math.PI)).multiply(
-                        (BigDecimal.ONE.subtract(BigDecimal.valueOf(Math.cos((lonTo.doubleValue() - lonFrom.doubleValue()) * Math.PI)))).divide(BigDecimal.valueOf(2))));
-
-        return BigDecimal.valueOf(12742).multiply(BigDecimal.valueOf(Math.asin(Math.sqrt(res.doubleValue()))));
+    @Override
+    public List<CustomerFlightResponse> findAll(LocalDate currentDate) {
+        return flightRepository
+                .findAllByFlightDate(currentDate)
+                .stream()
+                .map(flight -> CustomerFlightResponse
+                        .builder()
+                        .flightTime(flight.getArrivalTime())
+                        .id(flight.getId())
+                        .flightDate(flight.getFlightDate())
+                        .from(CityResponse
+                                .builder()
+                                .state(flight.getFrom().getState())
+                                .cityName(flight.getFrom().getCityName())
+                                .build())
+                        .to(CityResponse
+                                .builder()
+                                .state(flight.getTo().getState())
+                                .cityName(flight.getTo().getCityName())
+                                .build())
+                        .departureTime(flight.getDepartureTime())
+                        .plane(PlaneResponse
+                                .builder()
+                                .supplierName(flight.getPlane().getSupplier().getSupplierName())
+                                .model(flight.getPlane().getModel())
+                                .build())
+                        .price(flight.getPrice())
+                        .build())
+                .collect(Collectors.toList());
     }
-
 }

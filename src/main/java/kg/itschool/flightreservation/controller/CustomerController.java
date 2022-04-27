@@ -1,8 +1,9 @@
 package kg.itschool.flightreservation.controller;
 
-import kg.itschool.flightreservation.exceptions.EntityNotFoundException;
+import kg.itschool.flightreservation.model.request.CreateBookingRequest;
 import kg.itschool.flightreservation.model.request.CreateCustomerRequest;
 import kg.itschool.flightreservation.service.CustomerService;
+import kg.itschool.flightreservation.service.impl.CustomerServiceImpl;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -33,4 +34,5 @@ public class CustomerController {
                 .status(HttpStatus.OK)
                 .body(customerService.getById(id));
     }
+
 }

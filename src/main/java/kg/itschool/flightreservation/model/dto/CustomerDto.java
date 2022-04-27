@@ -2,6 +2,7 @@ package kg.itschool.flightreservation.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import kg.itschool.flightreservation.model.dto.WalletDto;
+import kg.itschool.flightreservation.model.entity.Flight;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,6 +11,7 @@ import lombok.experimental.FieldDefaults;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Builder

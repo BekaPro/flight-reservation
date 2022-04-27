@@ -1,6 +1,8 @@
 package kg.itschool.flightreservation.aop;
 
 import kg.itschool.flightreservation.exceptions.EntityNotFoundException;
+import kg.itschool.flightreservation.exceptions.FundsException;
+import kg.itschool.flightreservation.model.response.MessageResponse;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -17,6 +19,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleEntityNotFound(EntityNotFoundException ex) {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(ex.getMessage());
+                .body(MessageResponse.sendMessage(ex.getMessage()));
+    }
+
+    @ExceptionHandler(FundsException.class)
+    protected ResponseEntity<?> handleFundsException(FundsException ex) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_ACCEPTABLE)
+                .body(MessageResponse.sendMessage(ex.getMessage()));
     }
 }

@@ -49,6 +49,7 @@ public class FlightController {
 
     @PostMapping("/book")
     public ResponseEntity<?> bookFlight(@RequestBody CreateBookingRequest request) {
+
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
                 .body(flightService.book(request));

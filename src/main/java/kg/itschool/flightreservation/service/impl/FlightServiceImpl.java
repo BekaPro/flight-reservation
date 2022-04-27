@@ -91,6 +91,7 @@ public class FlightServiceImpl implements FlightService {
         }
 
         flight.getPassengers().add(customer);
+        customer.getWallet().setFunds(customer.getWallet().getFunds().subtract(flight.getPrice()));
         flightRepository.save(flight);
 
         return MessageResponse.sendMessage("Booking successful");

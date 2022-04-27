@@ -17,12 +17,9 @@ public class CreateFligthRequest {
     LocalTime departureTime;
     LocalTime arrivalTime;
     BigDecimal price;
-
     String stateFrom;
     String cityFrom;
-
     String stateTo;
     String cityTo;
-
     Long planeId;
 }

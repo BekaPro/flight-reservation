@@ -5,6 +5,7 @@ import kg.itschool.flightreservation.model.entity.Flight;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Example;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -25,5 +26,9 @@ public interface FlightRepository extends JpaRepository<Flight, Long> {
             "JOIN tb_customer c on c.id = b.customer_id " +
             "WHERE c.id = ?1", nativeQuery = true)
     List<Flight> findAllByPassenger(Customer customer);
+
+    @Modifying
+    @Query(value = "DELETE FROM tb_booking WHERE customer_id = ?1 AND flight_id = ?2", nativeQuery = true)
+    void deleteFromBooking(Long customerId, Long flightId);
 
 }

@@ -16,4 +16,6 @@ public interface FlightService {
     List<CustomerFlightResponse> findAll(LocalDate currentDate, String cityFrom, String cityTo);
     MessageResponse book(CreateBookingRequest request);
     List<CustomerFlightResponse> getFlightsByCustomers(Long id);
+
+    MessageResponse cancelBooking(CreateBookingRequest request);
 }

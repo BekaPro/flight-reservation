@@ -24,11 +24,10 @@ import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -133,4 +132,10 @@ public class FlightServiceImpl implements FlightService {
                 .build();
     }
 
+    @Override
+    @Transactional
+    public MessageResponse cancelBooking(CreateBookingRequest request) {
+        flightRepository.deleteFromBooking(request.getCustomerId(), request.getFlightId());
+        return MessageResponse.sendMessage("Flight canceled");
+    }
 }
